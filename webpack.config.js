@@ -1,6 +1,6 @@
 /* global __dirname, require, module */
 const path = require('path')
-const BUILD_DIR = path.resolve(__dirname, 'public/bin')
+const BUILD_DIR = path.resolve(__dirname, 'build')
 const APP_DIR = path.resolve(__dirname, 'src/')
 
 const config = {
