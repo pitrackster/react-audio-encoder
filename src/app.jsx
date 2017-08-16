@@ -19,7 +19,7 @@ class App extends Component {
         current: 256
       },
       samplerate: {
-        available: [44100, 96000, 22000],
+        available: [22000, 44100, 48000, 96000],
         current: 44100
       },
       files: []
@@ -33,8 +33,15 @@ class App extends Component {
     
     xhr.open('POST', uri, true)
     xhr.onreadystatechange = () => {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        console.log('XHR RESPONSE', xhr.responseText) // handle response.
+      if (xhr.readyState === 4) {
+
+        if (xhr.status === 200) {
+          // XHR END WITH SUCCESS
+          console.log('SUCCESS', xhr.responseText) // handle response.
+        } else {
+          // XHR END WITH ERROR
+          console.log('ERROR', xhr.responseText) // handle response.
+        }       
       }
     }
 
@@ -54,28 +61,15 @@ class App extends Component {
     const added = []
     Object.keys(fileList).forEach(index => {      
       added.push(fileList[index])
-    })
-    //return files.concat(added)
-    
+    })   
 
     this.setState(Object.assign(this.state, {files: this.state.files.concat(added)}))
-
-    console.log('new state', this.state)
-
-
-    /*console.log('add files', fileList)
-    console.log('state before', this.state.files)
-    const filesArray = Array.from(fileList)
-    const existingFiles = Array.from(this.state.files)
-    console.log(filesArray)
-    existingFiles.push(filesArray)
-    this.setState(Object.assign(this.state, {files: existingFiles}))
-    console.log('state after', this.state)*/
   }
 
-  onDownload(){
-    URL.revokeObjectURL(this.state.objectUrl)
-    this.setState({requestData: null, objectUrl: null})
+  deleteFile(index){
+    console.log('delete at index ' + index)
+    console.log (this.state)
+    this.setState(Object.assign(this.state, {files: this.state.files.splice(1, index)}))
   }
 
   render() {
@@ -85,14 +79,23 @@ class App extends Component {
           <label>Fichier(s) à encoder</label>
           <input type="file" id="input" className="form-control"  multiple onChange={(e) => this.addFiles(e.target.files)} />
         </div>
-        <button disabled={this.state.files.length === 0} onClick={() => this.processFiles()} className="btn btn-default">Envoyer</button>
+        <button disabled={this.state.files.length === 0} onClick={() => this.processFiles()} className="btn btn-default text-right">Envoyer</button>
+
+        <table className="table table-stripped">
+          <tbody>
+          {this.state.files.map((file, index) => 
+            <tr key={index}>
+              <td>{file.name}</td>
+              <td><button onClick={() => this.deleteFile(index)}>delete</button></td>
+            </tr>
+          )}
+          </tbody>
+        </table>
       </div>
     )
   }
 }
 
 App.propTypes = {}
-
-
 
 export default App
