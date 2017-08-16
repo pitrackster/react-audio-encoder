@@ -20,7 +20,8 @@ class App extends Component {
         available: [22000, 44100, 48000, 96000],
         current: 44100
       },
-      files: []
+      files: [],
+      objectUrl: null
     }
   }
 
@@ -28,6 +29,8 @@ class App extends Component {
     var uri = './script.php'
     var xhr = new XMLHttpRequest()
     var fd = new FormData()
+
+    xhr.responseType = 'blob'
     
     xhr.open('POST', uri, true)
 
@@ -43,10 +46,14 @@ class App extends Component {
 
         if (xhr.status === 200) {
           // XHR END WITH SUCCESS
-          console.log('SUCCESS', xhr.responseText) // handle response.
+          console.log('success', xhr)
+          //console.log('SUCCESS', xhr.responseText) // handle response.
           // create blob from response
+          const blob = xhr.response
+          
 
-          // URL.createObjectURL(blob)
+          const objectURL = window.URL.createObjectURL(blob)
+          this.setState(Object.assign(this.state, {objectUrl: objectURL}))
         } else {
           // XHR END WITH ERROR
           console.log('ERROR', xhr.responseText) // handle response.
@@ -214,6 +221,9 @@ class App extends Component {
         </div>
         </div>
         <button disabled={this.state.files.length === 0} onClick={() => this.processFiles()} className="btn btn-default text-right">Envoyer</button>
+        {this.state.objectUrl && 
+          <a href={this.state.objectUrl} download="encoded.zip">Download</a>
+        }
         <hr/>
         <table className="table table-stripped">
           <tbody>

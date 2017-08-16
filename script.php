@@ -69,7 +69,7 @@ if (isset($_FILES) && count($_FILES) > 0) {
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         header('Content-Length: ' . filesize($zipFile));
-        readfile($file);
+        readfile($zipFile);
         exit;
     } else {
         die("Error: Zip file not found.");
