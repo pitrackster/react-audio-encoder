@@ -1,6 +1,5 @@
 <?php
 
-// @TODO parse int values
 $samplerate = isset($_POST['samplerate']) ? intval($_POST['samplerate']) : 44100;
 $bitrate = isset($_POST['bitrate']) ? intval($_POST['bitrate']) : 256;
 $container =  isset($_POST['container']) ? $_POST['container'] : 'ogg';
