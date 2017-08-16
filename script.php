@@ -4,9 +4,6 @@ $samplerate = isset($_POST['samplerate']) ? intval($_POST['samplerate']) : 44100
 $bitrate = isset($_POST['bitrate']) ? intval($_POST['bitrate']) : 256;
 $container =  isset($_POST['container']) ? $_POST['container'] : 'ogg';
 
-// var_dump($_POST);
-// var_dump($_FILES);
-
 if (isset($_FILES) && count($_FILES) > 0) {
 
     for($i = 0; $i < count($_FILES); $i++) {
@@ -70,7 +67,7 @@ if (isset($_FILES) && count($_FILES) > 0) {
         header('Pragma: public');
         header('Content-Length: ' . filesize($zipFile));
         readfile($zipFile);
-        exit;
+        //exit;
     } else {
         die("Error: Zip file not found.");
     }

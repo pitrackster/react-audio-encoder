@@ -36,22 +36,18 @@ class App extends Component {
 
     xhr.onprogress = (e) => {
       if (e.lengthComputable) {  
-        const percentComplete = (e.loaded / e.total) * 100
-        console.log('%' + percentComplete)
-        //$('#progressbar').progressbar( "option", "value", percentComplete );
+        //const percentComplete = (e.loaded / e.total) * 100
       } 
     }
+
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
 
         if (xhr.status === 200) {
           // XHR END WITH SUCCESS
           console.log('success', xhr)
-          //console.log('SUCCESS', xhr.responseText) // handle response.
-          // create blob from response
+          // get blob response
           const blob = xhr.response
-          
-
           const objectURL = window.URL.createObjectURL(blob)
           this.setState(Object.assign(this.state, {objectUrl: objectURL}))
         } else {
@@ -93,9 +89,10 @@ class App extends Component {
       <div className="container">
         <div className="form-group">
           <label>Fichier(s) à encoder</label>
-          <input type="file" id="input" className="form-control"  multiple onChange={(e) => this.addFiles(e.target.files)} />
+          <input type="file" id="input" accept="audio/*" className="form-control"  multiple onChange={(e) => this.addFiles(e.target.files)} />
         </div>
         <div className="row">
+          {/* CONTAINER */}
           <div className="col-md-4">
             <div className="radio">
               <label>
@@ -107,7 +104,7 @@ class App extends Component {
                   name="optionsRadios"
                   value="mp3" 
                   checked={this.state.container.current === 'mp3'}/>
-                  Encoder en mp3
+                  MP3
               </label>
             </div>
             <div className="radio">
@@ -120,7 +117,7 @@ class App extends Component {
                   name="optionsRadios"
                   value="ogg" 
                   checked={this.state.container.current === 'ogg'}/>
-                  Encoder en ogg
+                 OGG
               </label>
             </div>    
             <div className="radio">
@@ -133,108 +130,125 @@ class App extends Component {
                   name="optionsRadios"
                   value="wav" 
                   checked={this.state.container.current === 'wav'}/>
-                  Encoder en wav
+                  WAV (16 bits)
               </label>
             </div>
           </div>
+          {/* BITRATE */}
+          <div className="col-md-4">
+            {this.state.container.current !== 'wav' && 
+              <div>
+                <div className="radio">
+                  <label>
+                    <input 
+                      onChange={() => 
+                        this.setState(Object.assign(this.state.bitrate, {current: 128}))
+                      } 
+                      type="radio" 
+                      name="optionsRadios2"
+                      value={128} 
+                      checked={this.state.bitrate.current === 128}/>
+                      128Kb/s
+                  </label>
+                </div>
+                <div className="radio">
+                  <label>
+                    <input 
+                      onChange={() => 
+                        this.setState(Object.assign(this.state.bitrate, {current: 256}))
+                      } 
+                      type="radio" 
+                      name="optionsRadios2"
+                      value={256} 
+                      checked={this.state.bitrate.current === 256}/>
+                      256Kb/s
+                  </label>
+                </div>
+                <div className="radio">
+                  <label>
+                    <input 
+                      onChange={() => 
+                        this.setState(Object.assign(this.state.bitrate, {current: 512}))
+                      } 
+                      type="radio" 
+                      name="optionsRadios2"
+                      value={512}
+                      checked={this.state.bitrate.current === 512}/>
+                      512Kb/s
+                  </label>
+                </div> 
+              </div>
+            }            
+          </div>
+          {/* SAMPLERATE */}
           <div className="col-md-4">
             <div className="radio">
               <label>
                 <input 
                   onChange={() => 
-                    this.setState(Object.assign(this.state.bitrate, {current: 128}))
+                    this.setState(Object.assign(this.state.samplerate, {current: 44100}))
                   } 
                   type="radio" 
-                  name="optionsRadios2"
-                  value={128} 
-                  checked={this.state.bitrate.current === 128}/>
-                  128Kb/s
+                  name="optionsRadios3" 
+                  value={44100} 
+                  checked={this.state.samplerate.current === 44100}/>
+                  44,1KHz
               </label>
             </div>
             <div className="radio">
               <label>
                 <input 
                   onChange={() => 
-                    this.setState(Object.assign(this.state.bitrate, {current: 256}))
+                    this.setState(Object.assign(this.state.samplerate, {current: 48000}))
                   } 
                   type="radio" 
-                  name="optionsRadios2"
-                  value={256} 
-                  checked={this.state.bitrate.current === 256}/>
-                  256Kb/s
+                  name="optionsRadios3"
+                  value={48000}
+                  checked={this.state.samplerate.current === 48000}/>
+                  48KHz
               </label>
             </div>
             <div className="radio">
               <label>
                 <input 
                   onChange={() => 
-                    this.setState(Object.assign(this.state.bitrate, {current: 512}))
+                    this.setState(Object.assign(this.state.samplerate, {current: 96000}))
                   } 
                   type="radio" 
-                  name="optionsRadios2"
-                  value={512}
-                  checked={this.state.bitrate.current === 512}/>
-                  512Kb/s
+                  name="optionsRadios3"
+                  value={96000} 
+                  checked={this.state.samplerate.current === 96000}/>
+                  96KHz
               </label>
             </div> 
           </div>
-          <div className="col-md-4">
-          <div className="radio">
-            <label>
-              <input 
-                onChange={() => 
-                  this.setState(Object.assign(this.state.samplerate, {current: 44100}))
-                } 
-                type="radio" 
-                name="optionsRadios3" 
-                value={44100} 
-                checked={this.state.samplerate.current === 44100}/>
-                44,1KHz
-            </label>
-          </div>
-          <div className="radio">
-            <label>
-              <input 
-                onChange={() => 
-                  this.setState(Object.assign(this.state.samplerate, {current: 48000}))
-                } 
-                type="radio" 
-                name="optionsRadios3"
-                value={48000}
-                checked={this.state.samplerate.current === 48000}/>
-                48KHz
-            </label>
-          </div>
-          <div className="radio">
-            <label>
-              <input 
-                onChange={() => 
-                  this.setState(Object.assign(this.state.samplerate, {current: 96000}))
-                } 
-                type="radio" 
-                name="optionsRadios3"
-                value={96000} 
-                checked={this.state.samplerate.current === 96000}/>
-                96KHz
-            </label>
-          </div> 
         </div>
-        </div>
-        <button disabled={this.state.files.length === 0} onClick={() => this.processFiles()} className="btn btn-default text-right">Envoyer</button>
-        {this.state.objectUrl && 
-          <a href={this.state.objectUrl} download="encoded.zip">Download</a>
-        }
-        <hr/>
         <table className="table table-stripped">
           <tbody>
-          {this.state.files.map((file, index) => 
+          {this.state.files.length > 0 && this.state.files.map((file, index) => 
             <tr key={index}>
               <td>{file.name}</td>
-              <td><button onClick={() => this.deleteFile(index)}>delete</button></td>
+              <td><button className="btn btn-danger fa fa-trash" onClick={() => this.deleteFile(index)}></button></td>
             </tr>
           )}
+          {this.state.files.length === 0 &&
+            <tr>
+              <td><h3>Aucun fichier actuellement - Veuillez sélectionner un ou plusieurs fichiers à convertir...</h3></td>
+            </tr>
+          }
           </tbody>
         </table>
+        <hr/>
+        <div className="row">
+          <div className="col-md-6">
+            {this.state.objectUrl && 
+              <a href={this.state.objectUrl} className="btn btn-default fa fa-file-archive-o" download="encoded.zip">&nbsp;Download</a>
+            }
+          </div>
+          <div className="col-md-6 text-right">            
+            <button disabled={this.state.files.length === 0} onClick={() => this.processFiles()} className="btn btn-default">Convertir</button>
+          </div>
+        </div>        
       </div>
     )
   }
