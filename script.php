@@ -67,7 +67,6 @@ if (isset($_FILES) && count($_FILES) > 0) {
         header('Pragma: public');
         header('Content-Length: ' . filesize($zipFile));
         readfile($zipFile);
-        //exit;
     } else {
         die("Error: Zip file not found.");
     }

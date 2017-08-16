@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PropTypes as T } from 'prop-types'
+import {Modal} from 'react-bootstrap'
 
 
 // https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications
@@ -7,7 +7,8 @@ import { PropTypes as T } from 'prop-types'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {
+
+    this.initialState = {
       container: {
         available:['ogg', 'wav', 'mp3', 'flac'],
         current: 'ogg'
@@ -21,8 +22,11 @@ class App extends Component {
         current: 44100
       },
       files: [],
-      objectUrl: null
+      objectUrl: null,
+      processing: false
     }
+  
+    this.state = this.initialState
   }
 
   processFiles(){
@@ -30,10 +34,12 @@ class App extends Component {
     var xhr = new XMLHttpRequest()
     var fd = new FormData()
 
-    xhr.responseType = 'blob'
-    
+    this.setState(Object.assign(this.state, {processing: true}))
+
+    xhr.responseType = 'blob'    
     xhr.open('POST', uri, true)
 
+    // not used
     xhr.onprogress = (e) => {
       if (e.lengthComputable) {  
         //const percentComplete = (e.loaded / e.total) * 100
@@ -42,7 +48,7 @@ class App extends Component {
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
-
+        this.setState(Object.assign(this.state, {processing: false}))
         if (xhr.status === 200) {
           // XHR END WITH SUCCESS
           console.log('success', xhr)
@@ -52,8 +58,10 @@ class App extends Component {
           this.setState(Object.assign(this.state, {objectUrl: objectURL}))
         } else {
           // XHR END WITH ERROR
-          console.log('ERROR', xhr.responseText) // handle response.
-        }       
+          console.log('ERROR', xhr.responseText)
+        }
+        
+        //this.setState(Object.assign(this.state, this.initialState))
       }
     }
 
@@ -67,6 +75,7 @@ class App extends Component {
     
     // Initiate a multipart/form-data upload
     xhr.send(fd)
+    
   }
 
   addFiles(fileList) {
@@ -82,6 +91,10 @@ class App extends Component {
     const cloned = Array.from(this.state.files)
     cloned.splice(index, 1)
     this.setState(Object.assign(this.state, {files: cloned}))
+  }
+
+  close(){
+
   }
 
   render() {
@@ -241,19 +254,31 @@ class App extends Component {
         <hr/>
         <div className="row">
           <div className="col-md-6">
-            {this.state.objectUrl && 
-              <a href={this.state.objectUrl} className="btn btn-default fa fa-file-archive-o" download="encoded.zip">&nbsp;Download</a>
+            {this.state.objectUrl !== null && 
+              <a href={this.state.objectUrl} className="btn btn-primary" download="encoded.zip"><i className="fa fa-file-archive-o"></i>&nbsp;Download</a>
             }
           </div>
           <div className="col-md-6 text-right">            
             <button disabled={this.state.files.length === 0} onClick={() => this.processFiles()} className="btn btn-default">Convertir</button>
           </div>
-        </div>        
+        </div>
+
+        <Modal show={this.state.processing}  onHide={() => this.close()}>
+          <Modal.Header>
+            <Modal.Title>Veuillez patienter pendant le traitement des données.</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="row"> 
+              <div className="col-md-12" style={{textAlign:'center'}}>
+                <div className="fa fa-refresh fa-spin fa-3x fa-fw"></div>
+                <span className="sr-only">Loading...</span>   
+              </div>                
+            </div>                   
+          </Modal.Body>
+        </Modal>        
       </div>
     )
   }
 }
-
-App.propTypes = {}
 
 export default App
