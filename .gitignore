@@ -2,3 +2,4 @@ node_modules
 uploaded/*
 encoded/*
 build/*
+!.keep
