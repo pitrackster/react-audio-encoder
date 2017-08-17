@@ -14,15 +14,14 @@ This app is intended for my personal use:
 
 `npm install && npm run webpack`
 
-#### You might need to set up properly your php.ini `upload_max_filesize` && `post_max_size` entry
+##### You might need to set up properly your php.ini `upload_max_filesize` && `post_max_size` entry
 
 > (In ubuntu / php 7 you can find this file in `/etc/php/7.0/apache2/php.ini`)
 
-### scripts
+### Scripts
 
 - `npm run webpack` - build javascript
 - `npm run watch` - build javascript and watch for changes
-
 
 ### Warnings
 
@@ -34,4 +33,4 @@ The process might take a long time depending on :
 
 ### TODO
 
-handle errors and check inputs ;-)
+Handle errors, check inputs and give feedback to users ;-)
