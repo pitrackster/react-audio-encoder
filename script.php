@@ -19,7 +19,7 @@ if (isset($_FILES) && count($_FILES) > 0) {
         // audio file name = video file name without original extension but with given container ext
         $encodedFileName =  $path_parts['filename'] . '.' . $container;
 
-        $cmd = 'ffmpeg -i "uploaded/' .$file. '" -ar ' . $samplerate ;
+        $cmd = 'avconv -i "uploaded/' .$file. '" -ar ' . $samplerate ;
         // set bitrate only if ogg / mp3 encoding target
         if($container === 'mp3' || $container === 'ogg') {
             $cmd .= ' -ab '.$bitrate.'k' ;
@@ -39,7 +39,7 @@ if (isset($_FILES) && count($_FILES) > 0) {
     }
 
     // zip encoded folder
-    $zipFile = './encoded_audio.zip';
+    $zipFile = './zipped/encoded_audio.zip';
     $zip = new ZipArchive();
     if($zip->open($zipFile, ZipArchive::CREATE) !== TRUE) {
         exit('impossible d\'ouvrir l\'archive');

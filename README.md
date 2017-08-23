@@ -18,6 +18,12 @@ This app is intended for my personal use:
 
 > (In ubuntu / php 7 you can find this file in `/etc/php/7.0/apache2/php.ini`)
 
+### Install
+
+`npm install && npm run webpack`
+`sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX uploaded/ encoded/ zipped/`
+`sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX uploaded/ encoded/ zipped/`
+
 ### Scripts
 
 - `npm run webpack` - build javascript

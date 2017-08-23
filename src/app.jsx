@@ -93,10 +93,6 @@ class App extends Component {
     this.setState(Object.assign(this.state, {files: cloned}))
   }
 
-  close(){
-
-  }
-
   render() {
     return(
       <div className="container">
@@ -263,7 +259,7 @@ class App extends Component {
           </div>
         </div>
 
-        <Modal show={this.state.processing}  onHide={() => this.close()}>
+        <Modal show={this.state.processing}>
           <Modal.Header>
             <Modal.Title>Veuillez patienter pendant le traitement des données.</Modal.Title>
           </Modal.Header>
