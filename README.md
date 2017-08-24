@@ -1,6 +1,6 @@
 # react-audio-encoder
 
-Minimal audio encoder app using ReactJS and ffmpeg
+Minimal audio encoder app using ReactJS and avconv (works out of the box in raspbian while ffmpeg don't)
 
 The zip created is sent as blob to the client... nothing live on the server after the end of the process.
 
@@ -21,8 +21,10 @@ This app is intended for my personal use:
 ### Install
 
 `npm install && npm run webpack`
-`sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX uploaded/ encoded/ zipped/`
-`sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX uploaded/ encoded/ zipped/`
+
+`sudo setfacl -dR -m u:www-data:rwX uploaded/ encoded/ zipped/`
+
+`sudo setfacl -R -m u:www-data:rwX uploaded/ encoded/ zipped/`
 
 ### Scripts
 
